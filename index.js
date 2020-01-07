@@ -35,7 +35,7 @@ app.use('/api/statistical', statisticalApi)
 app.get('/', (req, res) => res.send('Hello World with Express'));
 
 var CronJob = require('cron').CronJob;
-var job = new CronJob('00 30 13 * * *', function(req, res) {
+var job = new CronJob('00 36 13 * * *', function(req, res) {
     console.log("chay luc 23h 30 .........")
     console.log("chay luc 23h 30 .........")
     newspaperUtils.getFreshNewspaperFromElastic(req, res)
