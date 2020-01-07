@@ -42,7 +42,5 @@ var job = new CronJob('00 42 06 * * *', function(req, res) {
   'Etc/UTC' 
 );
 job.start()
-var server  = require('http').createServer(app);
-server.listen(8080)
-// var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
 server.timeout = 2000;
