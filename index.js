@@ -9,7 +9,7 @@ let statisticalApi = require("./routes/api/statistical")
 let newspaperUtils = require("./utils/NewspaperUtils")
 
 let app = express();
-var port = process.env.PORT || 80;
+var port = process.env.PORT || 8080;
 // body parser
 app.use(cors())
 app.use(bodyParser.urlencoded({
