@@ -19,3 +19,6 @@ exports.getRecentPosts = (req, res)=>{
 exports.getPostById = (req, res)=>{
     return NewspaperService.getPostById(req, res)
 }
+exports.getPostByTypeLocation = (req, res)=>{
+    return NewspaperService.getPostByTypeLocation(req, res)
+}

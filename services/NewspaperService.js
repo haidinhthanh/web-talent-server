@@ -95,3 +95,36 @@ exports.getPostById = async (req, res)=>{
         });
     }   
 }
+
+exports.getPostByTypeLocation = async (req, res)=>{
+    try{
+        var loc = req.params.loc
+        var no_post = req.params.no_post
+        var from = req.params.no_post
+        if(loc=="Việt nam"){
+            var query ={
+                $or:[
+                    {cities: { $exists: true, $not: {$size: 0}}},
+                    {provinces: {$exists:true, $not: {$size: 0}}},
+                    {nations: {$in:"Việt Nam"}}
+                ]
+            }
+            var data = await NewspaperModel.find(query)[from, no_post]
+            res.json({
+                data : data
+            })
+        }
+        else{
+            var query ={nations:{$not:{$ne:"Việt Nam"}}}
+            
+            var data = await NewspaperModel.find(query)[from, no_post]
+            res.json({
+                data : data
+            })
+        }
+    } catch (error){
+        res.json({
+            message: error
+        });
+    }   
+}

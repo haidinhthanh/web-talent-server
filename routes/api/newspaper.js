@@ -7,4 +7,5 @@ router.get("/deleteAll", NewspaperController.deleteAll)
 router.get("/getPopularPosts/:no_post/:from", NewspaperController.getPopularPosts)
 router.get("/getRecentPosts", NewspaperController.getRecentPosts)
 router.get("/getPost/:id", NewspaperController.getPostById)
+router.get("/getPostByTypeLocation/:loc/:no_post/:from", NewspaperController.getPostByTypeLocation)
 module.exports = router
