@@ -5,9 +5,11 @@ let cors = require("cors")
 let apiRoutes = require("./routes/api/api-routes")
 let newspaperApi = require("./routes/api/newspaper")
 let statisticalApi = require("./routes/api/statistical")
-
 let newspaperUtils = require("./utils/NewspaperUtils")
-
+var fs = require('fs');
+var https = require('https');
+var privateKey  = fs.readFileSync('./labs.pem');
+var credentials = {key: privateKey};
 let app = express();
 var port = process.env.PORT || 8080;
 // body parser
@@ -45,5 +47,8 @@ var job = new CronJob('00 42 06 * * *', function(req, res) {
 );
 job.start()
 
-var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
-server.timeout = 2000;
+// var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+// server.timeout = 2000;
+var httpsServer = https.createServer(credentials, app);
+
+httpsServer.listen(8080);
