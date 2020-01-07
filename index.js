@@ -39,7 +39,7 @@ var job = new CronJob('00 42 06 * * *', function(req, res) {
     newspaperUtils.getFreshNewspaperFromElastic(req, res)
   }, 
   true,
-  'Etc/UTC' 
+  'Asia/Ho_Chi_Minh' 
 );
 job.start()
 

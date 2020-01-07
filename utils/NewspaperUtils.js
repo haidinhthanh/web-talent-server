@@ -6,8 +6,8 @@ var MathUtils = require("../utils/Math")
 var request = require("request");
 var username = "elastic",
     password = "elasticbk",
-    url_count = "http://54.68.196.78:9200/talent-cleaned/_count",
-    url_search = "http://54.68.196.78:9200/talent-cleaned/_search",
+    url_count = "http://localhost:9200/talent-cleaned/_count",
+    url_search = "http://localhost:9200/talent-cleaned/_search",
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
 const createNews = async (item, no_view_rd)=>{
