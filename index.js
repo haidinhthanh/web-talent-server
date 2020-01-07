@@ -39,9 +39,10 @@ var job = new CronJob('00 42 06 * * *', function(req, res) {
     newspaperUtils.getFreshNewspaperFromElastic(req, res)
   }, 
   true,
-  'Asia/Ho_Chi_Minh' 
+  'Etc/UTC' 
 );
 job.start()
-
-var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+var server  = require('http').createServer(app);
+server.listen(8080)
+// var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
 server.timeout = 2000;
