@@ -43,4 +43,4 @@ var job = new CronJob('00 42 06 * * *', function(req, res) {
 );
 job.start()
 var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
-server.timeout = 2000;
+server.timeout = 90000;
