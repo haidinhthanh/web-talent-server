@@ -4,10 +4,11 @@ var LocationModel = require("../model/Location.model")
 var TagModel = require("../model/Tag.model")
 var MathUtils = require("../utils/Math")
 var request = require("request");
+var fs = require("fs");
 var username = "elastic",
     password = "elasticbk",
-    url_count = "http://localhost:9200/talent-cleaned/_count",
-    url_search = "http://localhost:9200/talent-cleaned/_search",
+    url_count = "http://54.68.196.78:9200/talent-cleaned/_count",
+    url_search = "http://54.68.196.78:9200/talent-cleaned/_search",
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
 const createNews = async (item, no_view_rd)=>{
@@ -17,6 +18,12 @@ const createNews = async (item, no_view_rd)=>{
                 _id: item._id,
                 _source: item._source,
                 no_view: no_view_rd
+            }).then(()=>{
+                var date = new Date().toISOString().slice(0,10).replace(":","_") +".txt"
+                fs.appendFile('./log/'+date, 'index url ' + item._source.url , function (err) {
+                    if (err) throw err;
+                    
+                  });
             })
         }
 }
@@ -288,7 +295,7 @@ const createNewsPaperAndUpdateStatistical = async (item, no_view_rd)=>{
     }
 }
 
-const callExternalApiUsingRequest = (callback, hits) => {
+const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
     request.get({    
         url : url_search,
         headers : {
@@ -316,7 +323,10 @@ const callExternalApiUsingRequest = (callback, hits) => {
 }
 
 
+
 exports.getFreshNewspaperFromElastic = async (req, res)=>{
+    var date = new Date().toISOString().slice(0,10).replace(":","_") +".txt"
+    createFile("./log/"+ date)
     request.get({    
         url : url_count,
         headers : {
@@ -341,7 +351,8 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             })
         }
         var hits = JSON.parse(body).count
-        callExternalApiUsingRequest(
+        hits =1
+        getTalentCleanedFromElasticSearchServer(
             function(response){
                 createUpdate(response)
             }, hits
@@ -371,3 +382,18 @@ async function delayedLog(item) {
     await createNewsPaperAndUpdateStatistical(item, MathUtils.getRandomInt(1000));
 }
   
+
+function createFile(filename) {
+    fs.open(filename,'r',function(err, fd){
+      if (err) {
+        fs.writeFile(filename, '', function(err) {
+            if(err) {
+                console.log(err);
+            }
+            console.log("The file was saved!");
+        });
+      } else {
+        console.log("The file exists!");
+      }
+    });
+  }

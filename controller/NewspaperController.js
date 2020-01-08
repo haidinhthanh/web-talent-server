@@ -22,3 +22,20 @@ exports.getPostById = (req, res)=>{
 exports.getPostByTypeLocation = (req, res)=>{
     return NewspaperService.getPostByTypeLocation(req, res)
 }
+exports.getNOPostsLocationType =(req, res)=>{
+    return NewspaperService.getNOPostsLocationType(req, res)
+}
+exports.getNOPostsFeatureType = (req, res)=>{
+    return NewspaperService.getNOPostsFeatureType(req, res)
+}
+exports.getPostsByTypeFeature =(req, res)=>{
+    return NewspaperService.getPostsByTypeFeature(req, res)
+}
+
+exports.searchPosts =(req, res)=>{
+    return NewspaperService.searchPosts(req, res)
+}
+
+exports.getNoSearchPosts =(req, res)=>{
+    return NewspaperService.getNoSearchPosts(req, res)
+}

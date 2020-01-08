@@ -29,8 +29,9 @@ exports.deleteAll = async(req, res)=>{
 
 exports.getN0Posts = async (req, res)=>{
     try {
-        var newspaper = await NewspaperModel.find()
-        res.json({"data": newspaper.length})
+        var newspaper = await NewspaperModel.find().count((err, num)=>{
+            res.json({"data": num})
+        })
     } catch (error) {
         res.json({
             message: error
@@ -38,28 +39,126 @@ exports.getN0Posts = async (req, res)=>{
     }
 }
 
+exports.getNOPostsLocationType =async (req, res)=>{
+    try {
+        var loc = req.params.loc
+        if(loc=="vn"){
+            var query ={
+                $or:[
+                    {"_source.processor_ner_loc.cities": { $exists: true, $not: {$size: 0}}},
+                    {"_source.processor_ner_loc.provinces": {$exists:true, $not: {$size: 0}}},
+                    {"_source.processor_ner_loc.nations": "Việt Nam"}
+                ]
+            }
+            var data = await NewspaperModel.find(query).count((err, num)=>{
+                res.json({"data": num})
+            })
+        }
+        else{
+            var query ={"_source.processor_ner_loc.nations": {$ne: "Việt Nam"}}
+            
+            var data = await NewspaperModel.find(query).count((err, num)=>{
+                res.json({"data": num})
+            })
+        }
+    } catch (error) {
+        res.json({
+            message: error
+        });
+    }
+}
+exports.getNOPostsFeatureType =async (req, res)=>{
+    try {
+        var type = req.params.type
+        if(type=="Salary"){
+            var query ={
+                "_source.processor_talent_info.Salary": { $exists: true, $not: {$size: 0}}
+            }
+            var data = await NewspaperModel.find(query).count((err, num)=>{
+                res.json({"data": num})
+            })
+        }
+        else if(type=="Regime"){
+            var query ={
+                $or:[
+                    {"_source.processor_talent_info.Regime": {$exists:true, $not: {$size: 0}}}
+                ]
+            }
+            var data = await NewspaperModel.find(query).count((err, num)=>{
+                res.json({"data": num})
+            })
+        }
+        else if(type=="Environment"){
+            var query ={
+                $or:[
+                    {"_source.processor_talent_info.Environment": {$exists:true, $not: {$size: 0}}}
+                ]
+            }
+            var data = await NewspaperModel.find(query).count((err, num)=>{
+                res.json({"data": num})
+            })
+        }
+    } catch (error) {
+        res.json({
+            message: error
+        });
+    }
+}
+exports.getPostsByTypeFeature =async (req, res)=>{
+    try {
+        var type = req.params.type
+        var no_post = req.params.no_post
+        var from = req.params.from
+        if(type=="Salary"){
+            var query ={
+                $or:[
+                    {"_source.processor_talent_info.Salary": { $exists: true, $not: {$size: 0}}}
+                ]
+            }
+            var data = await NewspaperModel.find(query).skip(parseInt(from)).limit(parseInt(no_post))
+            res.json({
+                data : data
+            })
+        }
+        else if(type=="Regime"){
+            var query ={
+                $or:[
+                    {"_source.processor_talent_info.Regime": {$exists:true, $not: {$size: 0}}}
+                ]
+            }
+            var data = await NewspaperModel.find(query).skip(parseInt(from)).limit(parseInt(no_post))
+            res.json({
+                data : data
+            })
+        }
+        else if(type=="Environment"){
+            var query ={
+                $or:[
+                    {"_source.processor_talent_info.Environment": {$exists:true, $not: {$size: 0}}}
+                ]
+            }
+            var data = await NewspaperModel.find(query).skip(parseInt(from)).limit(parseInt(no_post))
+            res.json({
+                data : data
+            })
+        }
+    } catch (error) {
+        res.json({
+            message: error
+        });
+    }
+}
+
+
+
 exports.getPopularPosts = async (req, res)=>{
     try{
         var from = parseInt(req.params.from)
         var no_post = parseInt(req.params.no_post)
-        var sort_data = await NewspaperModel.find({}).sort({no_view: -1})
-        if( sort_data.length < from + no_post && from < sort_data.length){
-            var data = sort_data.slice(from, sort_data.length)
-            res.json({
-                data : data,
-            })
-        }   
-        else if(sort_data.length< from){
-            res.json({
-                data : [],
-            })
-        }
-        else{
-            var data = sort_data.slice(from, from + no_post)
-            res.json({
-                data : data,
-            })
-        }
+        var sort_data = await NewspaperModel.find({}).sort({no_view: -1}).skip(parseInt(from)).limit(parseInt(no_post))
+        res.json({
+                    data : sort_data,
+                })
     } catch (error){
         res.json({
             message: error
@@ -69,9 +168,9 @@ exports.getPopularPosts = async (req, res)=>{
 
 exports.getRecentPosts = async (req, res)=>{
     try{
-        var sort_data = await NewspaperModel.find({}).sort({date: -1})
+        var sort_data = await NewspaperModel.find({}).sort({date: -1}).limit(20)
         res.json({
-            data : sort_data.slice(0,20)
+            data : sort_data
         })
     
     } catch (error){
@@ -100,24 +199,24 @@ exports.getPostByTypeLocation = async (req, res)=>{
     try{
         var loc = req.params.loc
         var no_post = req.params.no_post
-        var from = req.params.no_post
-        if(loc=="Việt nam"){
+        var from = req.params.from
+        if(loc=="vn"){
             var query ={
                 $or:[
-                    {cities: { $exists: true, $not: {$size: 0}}},
-                    {provinces: {$exists:true, $not: {$size: 0}}},
-                    {nations: {$in:"Việt Nam"}}
+                    {"_source.processor_ner_loc.cities": { $exists: true, $not: {$size: 0}}},
+                    {"_source.processor_ner_loc.provinces": {$exists:true, $not: {$size: 0}}},
+                    {"_source.processor_ner_loc.nations": "Việt Nam"}
                 ]
             }
-            var data = await NewspaperModel.find(query)[from, no_post]
+            var data = await NewspaperModel.find(query).skip(parseInt(from)).limit(parseInt(no_post))
             res.json({
                 data : data
             })
         }
         else{
-            var query ={nations:{$not:{$ne:"Việt Nam"}}}
+            var query ={"_source.processor_ner_loc.nations": {$ne: "Việt Nam"}}
             
-            var data = await NewspaperModel.find(query)[from, no_post]
+            var data = await NewspaperModel.find(query).limit(10)
             res.json({
                 data : data
             })
@@ -126,5 +225,161 @@ exports.getPostByTypeLocation = async (req, res)=>{
         res.json({
             message: error
         });
+        
+    }   
+}
+
+exports.searchPosts = async (req, res)=>{
+    try{
+        var query = req.params.query
+        var startDate = req.params.startDate
+        var endDate = req.params.endDate
+        var loc = req.params.loc
+        var cate = req.params.cate
+        var tag = req.params.tag
+        var from = req.params.from
+        var no = req.params.no
+        var query_sum = {$and: []}
+        var query_tag = null
+        var query_loc = null;
+        var query_text = null;
+        var query_cate = null;
+        if(tag == "Salary"){
+            query_tag = {"_source.processor_talent_info.Salary": { $exists: true, $not: {$size: 0}}}
+        }
+        else if(tag == "Environment"){
+            query_tag = {"_source.processor_talent_info.Environment": { $exists: true, $not: {$size: 0}}}
+        }
+        else if(tag == "Regime"){
+            query_tag = {"_source.processor_talent_info.Regime": { $exists: true, $not: {$size: 0}}}
+        }
+        if(query_tag != null){
+            query_sum.$and.push(query_tag)
+        }
+        if(loc =="Việt Nam"){
+            query_loc = {$or:[
+                {"_source.processor_ner_loc.cities": { $exists: true, $not: {$size: 0}}},
+                {"_source.processor_ner_loc.provinces": {$exists:true, $not: {$size: 0}}},
+                {"_source.processor_ner_loc.nations": "Việt Nam"},
+            ]}}
+        else{
+            query_loc = {"_source.processor_ner_loc.nations": {$ne:"Việt Nam"}}
+        }
+        if(loc != "empty"){
+            query_sum.$and.push(query_loc)
+        }
+        if(query != "empty"){
+            query_text =  {$or:[
+                {"_source.title": {$regex : ".*"+query+".*"}},
+                {"_source.summary": {$regex : ".*"+query+".*"}},
+                {"_source.content": {$regex : ".*"+query+".*"}}
+            ]}
+            query_sum.$and.push(query_text)
+        }
+        if(cate != "empty"){
+            query_cate = {"_source.processor_category_classify": cate}
+            query_sum.$and.push(query_cate)
+        }
+        startTime = new Date(startDate)
+        endTime = new Date(endDate)
+        if( startTime.getTime() < endTime.getTime()){
+            query_sum.$and.push({"_source.published_date": {"$gte": startTime, "$lte": endTime}})
+        }else{
+            query_sum.$and =[]
+        }
+        
+        if(query_sum.$and.length == 0){
+            res.json({
+                data : []
+            })
+        }
+        else{
+            var data = await NewspaperModel.find(query_sum).skip(parseInt(from)).limit(parseInt(no))
+            res.json({
+                data : data
+            })
+        }
+    } catch (error){
+        res.json({
+            message: error
+        });
+        
+    }   
+}
+
+exports.getNoSearchPosts = async (req, res)=>{
+    try{
+        var query = req.params.query
+        var startDate = req.params.startDate
+        var endDate = req.params.endDate
+        var loc = req.params.loc
+        var cate = req.params.cate
+        var tag = req.params.tag
+        var from = req.params.from
+        var no = req.params.no
+        var query_sum = {$and: []}
+        var query_tag = null
+        var query_loc = null;
+        var query_text = null;
+        var query_cate = null;
+        if(tag == "Salary"){
+            query_tag = {"_source.processor_talent_info.Salary": { $exists: true, $not: {$size: 0}}}
+        }
+        else if(tag == "Environment"){
+            query_tag = {"_source.processor_talent_info.Environment": { $exists: true, $not: {$size: 0}}}
+        }
+        else if(tag == "Regime"){
+            query_tag = {"_source.processor_talent_info.Regime": { $exists: true, $not: {$size: 0}}}
+        }
+        if(query_tag != null){
+            query_sum.$and.push(query_tag)
+        }
+        if(loc =="Việt Nam"){
+            query_loc = {$or:[
+                {"_source.processor_ner_loc.cities": { $exists: true, $not: {$size: 0}}},
+                {"_source.processor_ner_loc.provinces": {$exists:true, $not: {$size: 0}}},
+                {"_source.processor_ner_loc.nations": "Việt Nam"},
+            ]}}
+        else{
+            query_loc = {"_source.processor_ner_loc.nations": {$ne:"Việt Nam"}}
+        }
+        if(loc != "empty"){
+            query_sum.$and.push(query_loc)
+        }
+        if(query != "empty"){
+            query_text =  {$or:[
+                {"_source.title": {$regex : ".*"+query+".*"}},
+                {"_source.summary": {$regex : ".*"+query+".*"}},
+                {"_source.content": {$regex : ".*"+query+".*"}}
+            ]}
+            query_sum.$and.push(query_text)
+        }
+        if(cate != "empty"){
+            query_cate = {"_source.processor_category_classify": cate}
+            query_sum.$and.push(query_cate)
+        }
+        startTime = new Date(startDate)
+        endTime = new Date(endDate)
+        if( startTime.getTime()< endTime.getTime()){
+            query_sum.$and.push({"_source.published_date": {"$gte": startTime, "$lte": endTime}})
+        }
+        else{
+            query_sum.$and =[]
+        }
+        if(query_sum.$and.length == 0){
+            res.json({
+                data : 0
+            })
+        }
+        else{
+            await NewspaperModel.find(query_sum).count((err, num)=>{
+                res.json({"data": num})
+            })
+        }
+    } catch (error){
+        res.json({
+            message: error
+        });
+        
     }   
 }

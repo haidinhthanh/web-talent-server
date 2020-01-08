@@ -8,4 +8,9 @@ router.get("/getPopularPosts/:no_post/:from", NewspaperController.getPopularPost
 router.get("/getRecentPosts", NewspaperController.getRecentPosts)
 router.get("/getPost/:id", NewspaperController.getPostById)
 router.get("/getPostByTypeLocation/:loc/:no_post/:from", NewspaperController.getPostByTypeLocation)
+router.get("/getNOPostsLocationType/:loc", NewspaperController.getNOPostsLocationType)
+router.get("/getPostsByTypeFeature/:type/:no_post/:from", NewspaperController.getPostsByTypeFeature)
+router.get("/getNOPostsFeatureType/:type", NewspaperController.getNOPostsFeatureType)
+router.get("/searchPosts/:query/:startDate/:endDate/:loc/:cate/:tag/:from/:no", NewspaperController.searchPosts)
+router.get("/getNoSearchPosts/:query/:startDate/:endDate/:loc/:cate/:tag/:from/:no", NewspaperController.getNoSearchPosts)
 module.exports = router

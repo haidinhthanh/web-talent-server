@@ -23,7 +23,7 @@ const NewspaperSchema = new Schema({
             type: String,
         },
         published_date:{
-            type: String, 
+            type: Date, 
         },
         images:{
             type: [{
@@ -31,7 +31,7 @@ const NewspaperSchema = new Schema({
             }]
         },
         indexed_date:{
-            type:String,
+            type:Date,
         },
         processor_ner_loc:{
             cities:[{
