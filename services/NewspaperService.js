@@ -360,7 +360,7 @@ exports.getNoSearchPosts = async (req, res)=>{
         }
         startTime = new Date(startDate)
         endTime = new Date(endDate)
-        if( startTime.getTime()< endTime.getTime()){
+        if( startTime.getTime() < endTime.getTime()){
             query_sum.$and.push({"_source.published_date": {"$gte": startTime, "$lte": endTime}})
         }
         else{
