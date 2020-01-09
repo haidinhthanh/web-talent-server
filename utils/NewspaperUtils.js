@@ -31,7 +31,6 @@ const createNews = async (item, no_view_rd)=>{
 const updateCategory = async (item, no_view_rd)=>{
     var cate = await CategoryModel.findById({_id: item._source.processor_category_classify})
         if(cate ==  null){
-            console.log("Check du"+cate)
             await CategoryModel.create({
                 _id: item._source.processor_category_classify,
                 name: item._source.processor_category_classify,
@@ -47,7 +46,6 @@ const updateCategory = async (item, no_view_rd)=>{
             })
         }
         else{
-            console.log("update "+ no_view_rd)
             await CategoryModel.updateOne(
                 { _id: item._source.processor_category_classify }
                 ,{
@@ -306,7 +304,7 @@ const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "2015-12-10T10:17:07Z",
+                        "gte" : "now-1d/d",
                         "lte" :  "now/d"
                     }
                 }
@@ -337,7 +335,7 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "2015-12-10T10:17:07Z",
+                        "gte" : "now-1d/d",
                         "lte" :  "now/d"
                     }
                 }
