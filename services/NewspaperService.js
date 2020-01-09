@@ -13,7 +13,7 @@ exports.getALl = async (req, res) => {
 
 exports.deleteAll = async(req, res)=>{
     try {
-        var newspapers = await NewspaperModel.find({"processor_category_classify": "Giáo dục"})
+        var newspapers = await NewspaperModel.find({"_source.processor_category_classify": "Giáo dục"})
         console.log(newspaper.length)
 
         for( let i=0; i<newspapers.length; i++){
