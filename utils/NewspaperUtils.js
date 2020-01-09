@@ -304,7 +304,7 @@ const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "now-1d/d",
+                        "gte" : "2015-12-10T10:17:07Z",
                         "lte" :  "now/d"
                     }
                 }
@@ -320,7 +320,7 @@ const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
     });
 }
 
-
+//2015-12-10T10:17:07Z  now-1d/d
 
 exports.getFreshNewspaperFromElastic = async (req, res)=>{
     var date = new Date().toISOString().slice(0,10).replace(":","_") +".txt"
@@ -335,7 +335,7 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "now-1d/d",
+                        "gte" : "2015-12-10T10:17:07Z",
                         "lte" :  "now/d"
                     }
                 }
