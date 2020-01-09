@@ -17,7 +17,7 @@ exports.deleteAll = async(req, res)=>{
         console.log(newspaper.length)
 
         for( let i=0; i<newspaper.length; i++){
-            await NewspaperModel.deleteMany({"_source.processor_category_classify": "Giáo dục"})
+            await NewspaperModel.deleteAll()
         }
         // Promise.all(await newspapers.map((item)=>{
         //     NewspaperModel.deleteMany({"_id": item._id})
