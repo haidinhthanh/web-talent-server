@@ -349,6 +349,7 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             })
         }
         var hits = JSON.parse(body).count
+        hits = 5
         getTalentCleanedFromElasticSearchServer(
             function(response){
                 createUpdate(response)
