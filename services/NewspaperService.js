@@ -14,6 +14,7 @@ exports.getALl = async (req, res) => {
 exports.deleteAll = async(req, res)=>{
     try {
         var newspaper = await NewspaperModel.find({})
+        console.log(newspaper.length)
         for( let i=0; i<newspaper.length; i++){
             await NewspaperModel.delete({"_id": newspaper[i]._id})
         }
