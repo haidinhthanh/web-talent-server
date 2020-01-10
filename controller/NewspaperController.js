@@ -39,3 +39,12 @@ exports.searchPosts =(req, res)=>{
 exports.getNoSearchPosts =(req, res)=>{
     return NewspaperService.getNoSearchPosts(req, res)
 }
+exports.getPostByCategory = (req, res)=>{
+    return NewspaperService.getPostByCategory(req, res)
+}
+exports.getNoCategoryPost = (req, res)=>{
+    return NewspaperService.getNoCategoryPost(req, res)
+}
+exports.updateView = (req, res) =>{
+    return NewspaperService.updateView(req, res)
+}

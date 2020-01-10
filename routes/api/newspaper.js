@@ -13,4 +13,6 @@ router.get("/getPostsByTypeFeature/:type/:no_post/:from", NewspaperController.ge
 router.get("/getNOPostsFeatureType/:type", NewspaperController.getNOPostsFeatureType)
 router.get("/searchPosts/:query/:startDate/:endDate/:loc/:cate/:tag/:from/:no", NewspaperController.searchPosts)
 router.get("/getNoSearchPosts/:query/:startDate/:endDate/:loc/:cate/:tag/:from/:no", NewspaperController.getNoSearchPosts)
+router.get("/getPostByCategory/:cate/:from/:no", NewspaperController.getPostByCategory)
+router.get("/getNoCategoryPost/:cate", NewspaperController.getNoCategoryPost)
 module.exports = router

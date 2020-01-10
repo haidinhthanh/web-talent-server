@@ -384,3 +384,37 @@ exports.getNoSearchPosts = async (req, res)=>{
         
     }   
 }
+
+exports.getPostByCategory = async (req, res)=>{
+    try {
+        var cate = req.params.cate
+        var from = req.params.from
+        var no_post = req.params.no
+        var query ={
+            "_source.processor_category_classify": cate
+        }
+        var data = await NewspaperModel.find(query).skip(parseInt(from)).limit(parseInt(no_post))
+        res.json({
+            data : data
+        })
+    } catch (error) {
+        res.json({
+            message: error
+        });
+    }
+}
+exports.getNoCategoryPost = async (req, res)=>{
+    try {
+        var cate = req.params.cate
+        var query ={
+            "_source.processor_category_classify": cate
+        }
+        await NewspaperModel.find(query).count((err, num)=>{
+            res.json({"data": num})
+        })
+    } catch (error) {
+        res.json({
+            message: error
+        });
+    }
+}
