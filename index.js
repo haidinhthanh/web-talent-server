@@ -51,7 +51,7 @@ job.start()
 const options = {
     key: fs.readFileSync('./key.pem'),
     cert: fs.readFileSync('./cert.pem'),
-    timeout: 3000,
+    timeout: 100000,
   };
   
 https.createServer(options, function (req, res) {
