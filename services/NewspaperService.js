@@ -2,6 +2,10 @@ const NewspaperModel = require("../model/Newspaper.model")
 exports.getALl = async (req, res) => {
     try {
         var newspaper = await NewspaperModel.find()
+        newspaper.map((item)=>{
+            var date = new Date(item._source.published_date)
+            console.log(date.getDate())
+        })
         res.json({"data": newspaper})
     } catch (error) {
         res.json({
@@ -17,14 +21,11 @@ exports.deleteAll = async(req, res)=>{
         console.log(newspapers.length)
 
         for( let i=0; i<newspapers.length; i++){
-            await NewspaperModel.deleteOne({"_source.processor_category_classify": "Công nghệ"})
+            await NewspaperModel.deleteOne(newspapers[i])
         }
-        // Promise.all(await newspapers.map((item)=>{
-        //     NewspaperModel.deleteMany({"_id": item._id})
-        // })).then(()=>{
-            res.json({
+        res.json({
                 message: "sucess"
-            })
+        })
         
     } catch (error) {
         res.json({
@@ -293,7 +294,7 @@ exports.searchPosts = async (req, res)=>{
         }else{
             query_sum.$and =[]
         }
-        
+        console.log("query " + JSON.stringify(query_sum))
         if(query_sum.$and.length == 0){
             res.json({
                 data : []
