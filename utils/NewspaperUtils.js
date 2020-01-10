@@ -304,8 +304,8 @@ const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "2015-12-10T10:17:07Z",
-                        "lte" :  "2021-12-10T10:17:07Z"
+                        "gte" : "now-1d/d",
+                        "lte" :  "now/d"
                     }
                 }
             },
@@ -335,8 +335,8 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "2015-12-10T10:17:07Z",
-                        "lte" :  "2021-12-10T10:17:07Z"
+                        "gte" : "now-1d/d",
+                        "lte" :  "now/d"
                     }
                 }
             }
@@ -349,6 +349,7 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             })
         }
         var hits = JSON.parse(body).count
+        console.log("hits "+hits)
         getTalentCleanedFromElasticSearchServer(
             function(response){
                 createUpdate(response)
