@@ -51,10 +51,10 @@ job.start()
 const options = {
     key: fs.readFileSync('./key.pem'),
     cert: fs.readFileSync('./cert.pem'),
-    timeout: 100000,
+    timeout: 10000,
   };
   
-https.createServer(options, function (req, res) {
+https.createServer(options, app,function (req, res) {
     res.writeHead(200);
     res.end("hello world\n");
   }).listen(port);
