@@ -19,6 +19,7 @@ const createNews = async (item, no_view_rd)=>{
                 _source: item._source,
                 no_view: no_view_rd
             }).then(()=>{
+                console.log("create news from url " + item._source.url)
                 var date = new Date().toISOString().slice(0,10).replace(":","_") +".txt"
                 fs.appendFile('./log/'+date, 'index url ' + item._source.url , function (err) {
                     if (err) throw err;
@@ -59,7 +60,6 @@ const updateCategory = async (item, no_view_rd)=>{
                         console.log("err " + err)
                     }
                 })
-            console.log( await CategoryModel.find({_id: item._source.processor_category_classify}))
         }
 }
 
@@ -304,8 +304,8 @@ const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "now-1d/d",
-                        "lte" :  "now/d"
+                        "gte" : "1999-12-10T10:17:07Z",
+                        "lte" :  "2029-12-10T10:17:07Z"
                     }
                 }
             },
@@ -335,8 +335,8 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "now-1d/d",
-                        "lte" :  "now/d"
+                        "gte" : "1999-12-10T10:17:07Z",
+                        "lte" :  "2029-12-10T10:17:07Z"
                     }
                 }
             }
@@ -367,7 +367,6 @@ async function processArray(array) {
     for (const item of array) {
       await delayedLog(item);
     }
-    console.log('Done!');
 }
 
 function delay() {
@@ -376,7 +375,6 @@ function delay() {
   
 async function delayedLog(item) {
     await delay();
-    console.log(new Date().getSeconds());
     await createNewsPaperAndUpdateStatistical(item, MathUtils.getRandomInt(10));
 }
   
