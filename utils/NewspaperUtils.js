@@ -376,7 +376,7 @@ function delay() {
 async function delayedLog(item) {
     await delay();
     console.log(new Date().getSeconds());
-    await createNewsPaperAndUpdateStatistical(item, MathUtils.getRandomInt(1000));
+    await createNewsPaperAndUpdateStatistical(item, MathUtils.getRandomInt(10));
 }
   
 
