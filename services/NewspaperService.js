@@ -1,12 +1,8 @@
 const NewspaperModel = require("../model/Newspaper.model")
 exports.getALl = async (req, res) => {
     try {
-        var newspaper = await NewspaperModel.find()
-        newspaper.map((item)=>{
-            var date = new Date(item._source.published_date)
-            console.log(date.getDate())
-        })
-        res.json({"data": newspaper})
+        var newspapers = await NewspaperModel.find()
+        res.json({"data": newspapers})
     } catch (error) {
         res.json({
             message: error
@@ -294,7 +290,6 @@ exports.searchPosts = async (req, res)=>{
         }else{
             query_sum.$and =[]
         }
-        console.log("query " + JSON.stringify(query_sum))
         if(query_sum.$and.length == 0){
             res.json({
                 data : []
