@@ -8,6 +8,10 @@ let statisticalApi = require("./routes/api/statistical")
 let newspaperUtils = require("./utils/NewspaperUtils")
 let app = express();
 var port = process.env.PORT ||8080;
+const https = require('https');
+const fs = require('fs');
+
+
 // body parser
 app.use(cors())
 app.use(bodyParser.urlencoded({
@@ -41,5 +45,16 @@ var job = new CronJob('00 13 14 * * *', function(req, res) {
   'Etc/UTC' 
 );
 job.start()
-var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
-server.timeout = 90000;
+// var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+// server.timeout = 90000;
+
+const options = {
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    timeout: 3000,
+  };
+  
+https.createServer(options, function (req, res) {
+    res.writeHead(200);
+    res.end("hello world\n");
+  }).listen(port);
