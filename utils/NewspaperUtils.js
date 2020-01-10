@@ -305,7 +305,7 @@ const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
                 "range" : {
                     "indexed_date" : {
                         "gte" : "2015-12-10T10:17:07Z",
-                        "lte" :  "now/d"
+                        "lte" :  "2021-12-10T10:17:07Z"
                     }
                 }
             },
@@ -336,7 +336,7 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
                 "range" : {
                     "indexed_date" : {
                         "gte" : "2015-12-10T10:17:07Z",
-                        "lte" :  "now/d"
+                        "lte" :  "2021-12-10T10:17:07Z"
                     }
                 }
             }
