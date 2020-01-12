@@ -7,8 +7,8 @@ var request = require("request");
 var fs = require("fs");
 var username = "elastic",
     password = "elasticbk",
-    url_count = "http://54.68.196.78:9200/talent-cleaned/_count",
-    url_search = "http://54.68.196.78:9200/talent-cleaned/_search",
+    url_count = "http://localhost:9200/talent-cleaned-e2/_count",
+    url_search = "http://localhost:9200/talent-cleaned-e2/_search",
     auth = "Basic " + new Buffer(username + ":" + password).toString("base64");
 
 const createNews = async (item, no_view_rd)=>{
@@ -304,8 +304,8 @@ const getTalentCleanedFromElasticSearchServer = (callback, hits) => {
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "now-1d/d",
-                        "lte" :  "nowd/d"
+                        "gte" : "2015-12-10T10:17:07Z",
+                        "lte" :  "2022-12-10T10:17:07Z"
                     }
                 }
             },
@@ -335,8 +335,8 @@ exports.getFreshNewspaperFromElastic = async (req, res)=>{
             "query": {
                 "range" : {
                     "indexed_date" : {
-                        "gte" : "now-1d/d",
-                        "lte" :  "now/d"
+                        "gte" : "2015-12-10T10:17:07Z",
+                        "lte" :  "2022-12-10T10:17:07Z"
                     }
                 }
             }
