@@ -44,17 +44,17 @@ var job = new CronJob('00 11 21 * * *', function(req, res) {
   true,
   'Etc/UTC' 
 );
-job.start()
-var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
-server.timeout = 90000;
+// job.start()
+// var server = app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+// server.timeout = 90000;
 
-// const options = {
-//     key: fs.readFileSync('./key.pem'),
-//     cert: fs.readFileSync('./cert.pem'),
-//     timeout: 10000,
-//   };
+const options = {
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+    timeout: 10000,
+  };
   
-// https.createServer(options, app,function (req, res) {
-//     res.writeHead(200);
-//     res.end("hello world\n");
-//   }).listen(port);
+https.createServer(options, app,function (req, res) {
+    res.writeHead(200);
+    res.end("hello world\n");
+  }).listen(port);
